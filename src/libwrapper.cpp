@@ -348,10 +348,12 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 				       utf8_output ? res_list[i].def.c_str() : loc_def.c_str());
 			}
 			int choise;
-			read_line *choice_readline = create_readline_object();
+			std::auto_ptr<read_line> choice_readline(create_readline_object());
 			for (;;) {
 				string str_choise;
 				choice_readline->read(_("Your choice[-1 to abort]: "), str_choise);
+				if (str_choise == "")
+					continue;
 				sscanf(str_choise.c_str(), "%d", &choise);
 				if (choise>=0 && choise<int(res_list.size())) { 
 					sdcv_pager pager;
@@ -359,9 +361,10 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 					break;
 				} else if (choise==-1){
 					break;
-				} else
+				} else {
 					printf(_("Invalid choise.\nIt must be from 0 to %d or -1.\n"), 
-					       res_list.size()-1);	  
+					       res_list.size()-1);
+				}
 			}
 		} else {
 			sdcv_pager pager(force);
