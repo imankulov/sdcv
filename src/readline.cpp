@@ -46,10 +46,15 @@ public:
 
 #else
 
+extern const char *rl_readline_name;
+
+
 class real_readline : public read_line {
+
 public:
 	real_readline()
 	{
+		rl_readline_name = "sdcv";
 		using_history();
 		string histname=(string(g_get_home_dir())+G_DIR_SEPARATOR+".sdcv_history");
 		read_history(histname.c_str());;
@@ -66,7 +71,7 @@ public:
 	}
 	bool read(const string &banner, string& line)
 	{
-    char *phrase=NULL;
+		char *phrase=NULL;
 		phrase=readline(banner.c_str());
 		if (phrase) {
 			line=phrase;
