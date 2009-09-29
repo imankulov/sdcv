@@ -348,7 +348,7 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 				       utf8_output ? res_list[i].def.c_str() : loc_def.c_str());
 			}
 			int choise;
-			std::auto_ptr<read_line> choice_readline(create_readline_object());
+			std::auto_ptr<read_line> choice_readline(create_readline_object(false));
 			for (;;) {
 				string str_choise;
 				choice_readline->read(_("Your choice[-1 to abort]: "), str_choise);

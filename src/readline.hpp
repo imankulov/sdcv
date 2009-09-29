@@ -11,6 +11,6 @@ public:
 	virtual void add_to_history(const std::string& phrase) {}
 };
 
-extern read_line *create_readline_object();
+extern read_line *create_readline_object(bool has_history=true);
 
 #endif//!_READLINE_HPP_
