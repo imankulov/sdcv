@@ -25,6 +25,8 @@
 #include <glib/gi18n.h>
 #include <cstring>
 #include <map>
+#include <set>
+#include <iostream>
 
 #include "utils.hpp"
 
@@ -335,13 +337,19 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 		}//if (!force)
 
 		if (!show_all_results && !force) {
-			printf(_("Found %zd items, similar to %s.\n"), res_list.size(),
-					utf8_output ? str : utf8_to_locale_ign_err(str).c_str());
+			std::set <string> res_set;
 			for (size_t i=0; i<res_list.size(); ++i) {
-				string loc_def = utf8_to_locale_ign_err(res_list[i].def);
-				printf("%s\t", utf8_output ? res_list[i].def.c_str() : loc_def.c_str());
+				res_set.insert(res_list[i].def);
 			}
-			printf("\n");
+			printf(_("Found %zd items, similar to %s.\n"), res_set.size(),
+					utf8_output ? str : utf8_to_locale_ign_err(str).c_str());
+			for( std::set<string>::const_iterator iter = res_set.begin();
+					iter != res_set.end(); ++iter){
+				string loc_def = utf8_to_locale_ign_err(*iter);
+				string def = utf8_output ? iter->c_str() :  loc_def.c_str();
+				std::cout << def << "\t";
+			}
+			std::cout << std::endl;
 		} else {
 			sdcv_pager pager(force);
 			fprintf(pager.get_stream(), _("Found %zd items, similar to %s.\n"),
