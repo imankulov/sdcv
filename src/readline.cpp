@@ -17,7 +17,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -35,7 +34,7 @@
 #include "readline.hpp"
 
 #ifndef WITH_READLINE
- 
+
 class dummy_readline : public read_line {
 public:
 	dummy_readline(bool has_history=true) {}

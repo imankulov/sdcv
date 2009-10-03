@@ -173,8 +173,8 @@ void Library::SimpleLookup(const string &str, TSearchResultList& res_list)
 		if (SimpleLookupWord(str.c_str(), ind, idict))
 			res_list.push_back(
 				TSearchResult(dict_name(idict), 
-					      poGetWord(ind, idict),
-					      parse_data(poGetWordData(ind, idict))));
+					poGetWord(ind, idict),
+					parse_data(poGetWordData(ind, idict))));
 	
 }
 
@@ -186,8 +186,7 @@ void Library::LookupWithFuzzy(const string &str, TSearchResultList& res_list)
 	if (!Libs::LookupWithFuzzy(str.c_str(), fuzzy_res, MAXFUZZY))
 		return;
 	
-	for (gchar **p=fuzzy_res, **end=fuzzy_res+MAXFUZZY; 
-	     p!=end && *p; ++p) {
+	for (gchar **p=fuzzy_res, **end=fuzzy_res+MAXFUZZY; p!=end && *p; ++p) {
 		SimpleLookup(*p, res_list);
 		g_free(*p);
 	}
@@ -289,7 +288,6 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 	if (str[0]=='\0')
 		return true;
 
-  
 	TSearchResultList res_list;
 
 
@@ -373,15 +371,12 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 			for (PSearchResult ptr=res_list.begin(); ptr!=res_list.end(); ++ptr)
 				print_search_result(pager.get_stream(), *ptr);
 		}
-    
 	} else {
 		std::string loc_str;
 		if (!utf8_output)
 			loc_str=utf8_to_locale_ign_err(str);
-    
 		printf(_("Nothing similar to %s, sorry :(\n"), utf8_output ? str : loc_str.c_str());
 	}
 	g_free(str);
-
 	return true;
 }
