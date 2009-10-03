@@ -13,3 +13,4 @@ configure
 po/POTFILES
 .deps
 stamp-h1
+tags
