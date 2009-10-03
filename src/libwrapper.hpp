@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "file.hpp"
-#include "lib.h"
+#include "lib/file.hpp"
+#include "lib/lib.h"
 #include "readline.hpp"
 
 using std::string;
