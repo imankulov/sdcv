@@ -347,22 +347,22 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 				       utf8_output ?  res_list[i].bookname.c_str() : loc_bookname.c_str(),
 				       utf8_output ? res_list[i].def.c_str() : loc_def.c_str());
 			}
-			int choise;
+			int choice;
 			std::auto_ptr<read_line> choice_readline(create_readline_object(false));
 			for (;;) {
-				string str_choise;
-				choice_readline->read(_("Your choice[-1 to abort]: "), str_choise);
-				if (str_choise == "")
+				string str_choice;
+				choice_readline->read(_("Your choice[-1 to abort]: "), str_choice);
+				if (str_choice == "")
 					continue;
-				sscanf(str_choise.c_str(), "%d", &choise);
-				if (choise>=0 && choise<int(res_list.size())) { 
+				sscanf(str_choice.c_str(), "%d", &choice);
+				if (choice>=0 && choice<int(res_list.size())) { 
 					sdcv_pager pager;
-					print_search_result(pager.get_stream(), res_list[choise]);
+					print_search_result(pager.get_stream(), res_list[choice]);
 					break;
-				} else if (choise==-1){
+				} else if (choice==-1){
 					break;
 				} else {
-					printf(_("Invalid choise.\nIt must be from 0 to %d or -1.\n"), 
+					printf(_("Invalid choice.\nIt must be from 0 to %d or -1.\n"), 
 					       res_list.size()-1);
 				}
 			}
