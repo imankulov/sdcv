@@ -1,4 +1,4 @@
-/* 
+/*
  * This file part of sdcv - console version of Stardict program
  * http://sdcv.sourceforge.net
  * Copyright (C) 2005-2006 Evgeniy <dushistov@mail.ru>
@@ -150,7 +150,7 @@ static string parse_data(const gchar *data)
 			break;
 		case 'y':
 			sec_size = strlen(p);
-			sec_size++;				
+			sec_size++;
 			break;
 		case 'W':
 		case 'P':
@@ -161,21 +161,21 @@ static string parse_data(const gchar *data)
 		p += sec_size;
 	}
 
-  
+
 	return res;
 }
 
 void Library::SimpleLookup(const string &str, TSearchResultList& res_list)
-{	
+{
 	glong ind;
 	res_list.reserve(ndicts());
 	for (gint idict=0; idict<ndicts(); ++idict)
 		if (SimpleLookupWord(str.c_str(), ind, idict))
 			res_list.push_back(
-				TSearchResult(dict_name(idict), 
+				TSearchResult(dict_name(idict),
 					poGetWord(ind, idict),
 					parse_data(poGetWordData(ind, idict))));
-	
+
 }
 
 void Library::LookupWithFuzzy(const string &str, TSearchResultList& res_list)
@@ -185,7 +185,7 @@ void Library::LookupWithFuzzy(const string &str, TSearchResultList& res_list)
 	gchar *fuzzy_res[MAXFUZZY];
 	if (!Libs::LookupWithFuzzy(str.c_str(), fuzzy_res, MAXFUZZY))
 		return;
-	
+
 	for (gchar **p=fuzzy_res, **end=fuzzy_res+MAXFUZZY; p!=end && *p; ++p) {
 		SimpleLookup(*p, res_list);
 		g_free(*p);
@@ -227,11 +227,11 @@ void Library::print_search_result(FILE *out, const TSearchResult & res)
 		loc_exp=utf8_to_locale_ign_err(res.exp);
 	}
 
-			
+
 	fprintf(out, "-->%s\n-->%s\n%s\n\n",
-		utf8_output ? res.bookname.c_str() : loc_bookname.c_str(), 
-		utf8_output ? res.def.c_str() : loc_def.c_str(), 
-		utf8_output ? res.exp.c_str() : loc_exp.c_str()); 
+		utf8_output ? res.bookname.c_str() : loc_bookname.c_str(),
+		utf8_output ? res.def.c_str() : loc_def.c_str(),
+		utf8_output ? res.exp.c_str() : loc_exp.c_str());
 }
 
 class sdcv_pager {
@@ -262,11 +262,11 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 
 	std::string query;
 
-	
+
 	analyze_query(loc_str, query);
 	if (!query.empty())
 		io.add_to_history(query.c_str());
-	
+
 
 
 	gsize bytes_read;
@@ -310,7 +310,7 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 		/*nothing*/;
 	}
 
-	if (!res_list.empty()) {    
+	if (!res_list.empty()) {
 		/* try to be more clever, if there are
 		   one or zero results per dictionary show all
 		*/
@@ -319,7 +319,7 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 		if (!force) {
 			DictResMap res_per_dict;
 			for(TSearchResultList::iterator ptr=res_list.begin(); ptr!=res_list.end(); ++ptr){
-				std::pair<DictResMap::iterator, DictResMap::iterator> r = 
+				std::pair<DictResMap::iterator, DictResMap::iterator> r =
 					res_per_dict.equal_range(ptr->bookname);
 				DictResMap tmp(r.first, r.second);
 				if (tmp.empty()) //there are no yet such bookname in map
