@@ -37,8 +37,6 @@
 
 class dummy_readline : public read_line {
 public:
-	dummy_readline(bool has_history=true) {}
-
 	bool read(const string& banner, string& line) {
 		printf(banner.c_str());
 		return stdio_getline(stdin, line);
@@ -48,23 +46,61 @@ public:
 #else
 
 extern const char *rl_readline_name;
+Autocompleter *completer;
 
+
+char *complete (const char * line, int item)
+{
+	return completer->complete(line, item);
+}
+
+
+Autocompleter::Autocompleter(Libs *libraries)
+{
+	libs = libraries;
+	reslist = new gchar*[ MAX_MATCH_ITEM_PER_LIB*libs->ndicts() ];
+}
+
+Autocompleter::~Autocompleter()
+{
+	delete []reslist;
+}
+
+char * Autocompleter::complete(const gchar * line, gint item)
+{
+	if (item == 0) {
+		string rule(line);
+		rule += '*';
+		for (int i=0; i<MAX_MATCH_ITEM_PER_LIB*libs->ndicts(); i++)
+			reslist[i] = NULL;
+		libs->LookupWithRule(rule.c_str(), reslist);
+	}
+	return reslist[item];
+}
 
 class real_readline : public read_line {
 
 private:
 	bool has_history;
+	bool has_completion;
 
 
 public:
-	real_readline(bool has_history=true)
+	real_readline(Libs *lib, bool has_history=true, bool has_completion=true)
 	{
-		rl_readline_name = "sdcv";
+		rl_readline_name = (char *)"sdcv";
 		this->has_history = has_history;
+		this->has_completion = has_completion;
 		if (has_history){
 			string histname=(string(g_get_home_dir()) + G_DIR_SEPARATOR + ".sdcv_history");
 			using_history();
 			read_history(histname.c_str());
+		}
+		if (has_completion) {
+			completer = new Autocompleter(lib);
+			rl_completion_entry_function = &complete;
+			rl_completer_word_break_characters = (char *)"";
+			rl_completion_append_character = '\0';
 		}
 	}
 	~real_readline() 
@@ -77,6 +113,9 @@ public:
 			if (!hist_size_str || sscanf(hist_size_str, "%d", &hist_size)<1)
 				hist_size=2000;
 			history_truncate_file(histname.c_str(), hist_size);
+		}
+		if (has_completion) {
+			delete completer;
 		}
 	}
 	bool read(const string &banner, string& line)
@@ -99,11 +138,11 @@ public:
 
 #endif//WITH_READLINE
 
-read_line *create_readline_object(bool has_history)
+read_line *create_readline_object(Libs *lib, bool has_history, bool has_completion)
 {
 #ifdef WITH_READLINE
-	return new real_readline(has_history);
+	return new real_readline(lib, has_history, has_completion);
 #else
-	return new dummy_readline(has_history);
+	return new dummy_readline();
 #endif
 }

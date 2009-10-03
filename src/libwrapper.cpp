@@ -335,35 +335,13 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 		}//if (!force)
 
 		if (!show_all_results && !force) {
-			printf(_("Found %d items, similar to %s.\n"), res_list.size(), 
-			       utf8_output ? str : utf8_to_locale_ign_err(str).c_str());
+			printf(_("Found %d items, similar to %s.\n"), res_list.size(),
+					utf8_output ? str : utf8_to_locale_ign_err(str).c_str());
 			for (size_t i=0; i<res_list.size(); ++i) {
-				string loc_bookname, loc_def;
-				loc_bookname=utf8_to_locale_ign_err(res_list[i].bookname);
-				loc_def=utf8_to_locale_ign_err(res_list[i].def);
-				printf("%d)%s-->%s\n", i,
-				       utf8_output ?  res_list[i].bookname.c_str() : loc_bookname.c_str(),
-				       utf8_output ? res_list[i].def.c_str() : loc_def.c_str());
+				string loc_def = utf8_to_locale_ign_err(res_list[i].def);
+				printf("%s\t", utf8_output ? res_list[i].def.c_str() : loc_def.c_str());
 			}
-			int choice;
-			std::auto_ptr<read_line> choice_readline(create_readline_object(false));
-			for (;;) {
-				string str_choice;
-				choice_readline->read(_("Your choice[-1 to abort]: "), str_choice);
-				if (str_choice == "")
-					continue;
-				sscanf(str_choice.c_str(), "%d", &choice);
-				if (choice>=0 && choice<int(res_list.size())) { 
-					sdcv_pager pager;
-					print_search_result(pager.get_stream(), res_list[choice]);
-					break;
-				} else if (choice==-1){
-					break;
-				} else {
-					printf(_("Invalid choice.\nIt must be from 0 to %d or -1.\n"), 
-					       res_list.size()-1);
-				}
-			}
+			printf("\n");
 		} else {
 			sdcv_pager pager(force);
 			fprintf(pager.get_stream(), _("Found %d items, similar to %s.\n"), 

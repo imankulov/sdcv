@@ -192,7 +192,7 @@ int main(int argc, char *argv[])
 	lib.load(dicts_dir_list, empty_list, disable_list);
 
 
-	std::auto_ptr<read_line> io(create_readline_object());
+	std::auto_ptr<read_line> io(create_readline_object(&lib, true, true));
 	if (optind < argc) {
 		for(int i=optind; i<argc; ++i)
 			if (!lib.process_phrase(argv[i], *io, non_interactive))
