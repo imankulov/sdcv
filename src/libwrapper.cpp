@@ -335,7 +335,7 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 		}//if (!force)
 
 		if (!show_all_results && !force) {
-			printf(_("Found %d items, similar to %s.\n"), res_list.size(),
+			printf(_("Found %zd items, similar to %s.\n"), res_list.size(),
 					utf8_output ? str : utf8_to_locale_ign_err(str).c_str());
 			for (size_t i=0; i<res_list.size(); ++i) {
 				string loc_def = utf8_to_locale_ign_err(res_list[i].def);
@@ -344,7 +344,7 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 			printf("\n");
 		} else {
 			sdcv_pager pager(force);
-			fprintf(pager.get_stream(), _("Found %d items, similar to %s.\n"), 
+			fprintf(pager.get_stream(), _("Found %zd items, similar to %s.\n"),
 				res_list.size(), utf8_output ? str : utf8_to_locale_ign_err(str).c_str());
 			for (PSearchResult ptr=res_list.begin(); ptr!=res_list.end(); ++ptr)
 				print_search_result(pager.get_stream(), *ptr);
