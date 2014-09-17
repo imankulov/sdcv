@@ -25,6 +25,7 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <cstdlib>
+#include <stdio.h>
 
 #include "utils.hpp"
 

@@ -7,7 +7,7 @@ sdcv_SOURCES = \
 	utils.cpp utils.hpp
 
 sdcv_DEPENDENCIES = lib/libstardict.a
-sdcv_LDADD = @SDCV_LIBS@ @LIBINTL@ @LIBREADLINE@ lib/libstardict.a
+sdcv_LDADD =  lib/libstardict.a @SDCV_LIBS@ @LIBINTL@ @LIBREADLINE@
 localedir = $(datadir)/locale
 
 INCLUDES = @SDCV_CFLAGS@  -I$(top_builddir) -Ilib
