@@ -7,7 +7,7 @@ AC_CONFIG_SRCDIR(src/sdcv.cpp)
 dnl Don't include maintainer make-rules by default
 AM_MAINTAINER_MODE
 
-AM_INIT_AUTOMAKE([dist-bzip2])
+AM_INIT_AUTOMAKE(sdcv, 0.4.4)
 
 AM_CONFIG_HEADER(config.h)
 AC_PROG_CC

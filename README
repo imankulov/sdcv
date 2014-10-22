@@ -1,3 +1,7 @@
 See sdcv man page for usage description.
 See INSTALL file for installation description.
 
+
+depend libs:
+  libpcre zlib glibmm-2.4 glib-2.0 iconv mmap ...
+
